@@ -44,18 +44,30 @@ const AnimatedSection: React.FC<AnimatedSectionProps> = ({
     };
   }, [threshold]);
 
-  const animationClass = `animate-${animation}`;
-  const delayStyle = { animationDelay: `${delay}ms`, opacity: 0 };
+  // Create animation classes
+  const getAnimationClass = () => {
+    if (!isVisible) return '';
+    switch (animation) {
+      case 'fade-in-up':
+        return 'animate-fade-in-up';
+      case 'fade-in':
+        return 'animate-fade-in';
+      case 'slide-in-right':
+        return 'animate-slide-in-right';
+      default:
+        return 'animate-fade-in';
+    }
+  };
 
   return (
     <div
       ref={sectionRef}
       className={cn(className)}
-      style={isVisible ? { ...delayStyle } : { opacity: 0 }}
-      data-animate={isVisible ? 'true' : 'false'}
-      data-animation={animation}
+      style={{ opacity: isVisible ? 1 : 0, transition: 'opacity 0.5s ease-in-out', animationDelay: `${delay}ms` }}
     >
-      <div className={isVisible ? animationClass : ''}>{children}</div>
+      <div className={cn(getAnimationClass())}>
+        {children}
+      </div>
     </div>
   );
 };

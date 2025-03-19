@@ -5,15 +5,17 @@ import { Menu, X, Phone } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
+// Update our navigation links to include hash links for single-page navigation
 const navLinks = [
   { name: 'Home', path: '/' },
-  { name: 'About', path: '/about' },
+  { name: 'About', path: '/#about' },
+  { name: 'Services', path: '/#services' },
+  { name: 'Contact', path: '/#contact' },
   { name: 'Procedures', path: '/procedures' },
   { name: 'Treatments', path: '/treatments' },
   { name: 'Complaints', path: '/complaints' },
   { name: 'Reviews', path: '/reviews' },
   { name: 'Blog', path: '/blog' },
-  { name: 'Contact', path: '/contact' },
 ];
 
 const Navbar = () => {
@@ -68,6 +70,7 @@ const Navbar = () => {
                 'px-3 py-2 text-sm font-medium rounded-md transition-colors',
                 'hover:bg-secondary hover:text-primary'
               )}
+              onClick={handleNavigation}
             >
               {link.name}
             </Link>
@@ -76,10 +79,12 @@ const Navbar = () => {
 
         {/* Contact Button */}
         <div className="hidden md:block">
-          <Button className="bg-primary text-white hover:bg-primary/90">
-            <Phone className="h-4 w-4 mr-2" />
-            Book Appointment
-          </Button>
+          <a href="#contact">
+            <Button className="bg-primary text-white hover:bg-primary/90">
+              <Phone className="h-4 w-4 mr-2" />
+              Book Appointment
+            </Button>
+          </a>
         </div>
 
         {/* Mobile Menu Toggle */}
@@ -115,10 +120,12 @@ const Navbar = () => {
             </Link>
           ))}
           <div className="mt-6">
-            <Button className="w-full bg-primary text-white hover:bg-primary/90">
-              <Phone className="h-4 w-4 mr-2" />
-              Book Appointment
-            </Button>
+            <a href="#contact" onClick={handleNavigation}>
+              <Button className="w-full bg-primary text-white hover:bg-primary/90">
+                <Phone className="h-4 w-4 mr-2" />
+                Book Appointment
+              </Button>
+            </a>
           </div>
         </nav>
       </div>
