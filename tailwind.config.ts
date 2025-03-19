@@ -67,7 +67,15 @@ export default {
 					light: '#E0F2FE',
 					DEFAULT: '#0EA5E9',
 					dark: '#0369A1'
-				}
+				},
+                // Real estate colors
+                realestate: {
+                    primary: '#2563EB',
+                    secondary: '#E0F2FE',
+                    accent: '#F97316',
+                    light: '#F1F5F9',
+                    dark: '#0F172A'
+                }
 			},
 			borderRadius: {
 				lg: 'var(--radius)',

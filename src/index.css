@@ -11,7 +11,7 @@
     --card-foreground: 222.2 84% 4.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
-    --primary: 173 80% 40%;
+    --primary: 221 83% 53%;
     --primary-foreground: 210 40% 98%;
     --secondary: 210 40% 96.1%;
     --secondary-foreground: 222.2 47.4% 11.2%;
@@ -23,12 +23,12 @@
     --destructive-foreground: 210 40% 98%;
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 173 80% 40%;
+    --ring: 221 83% 53%;
     --radius: 0.75rem;
     
-    /* Medical theme colors */
-    --medical-light: 173 80% 93%;
-    --medical-dark: 173 80% 25%;
+    /* Property website theme colors - blue-based real estate color scheme */
+    --medical-light: 214 100% 97%;
+    --medical-dark: 221 83% 25%;
   }
 }
 
@@ -131,8 +131,25 @@
   }
 }
 
-/* Add background pattern for hero section */
+/* Add subtle pattern for hero section */
 .bg-hero-pattern {
   background-color: #f8fafc;
-  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c1e4f5' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%232563eb' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* Add custom components for real estate website */
+.property-feature {
+  @apply flex items-center px-3 py-1 rounded-full border border-primary/20 text-sm;
+}
+
+.property-price {
+  @apply text-2xl font-bold text-primary;
+}
+
+.property-location {
+  @apply flex items-center text-sm text-muted-foreground;
+}
+
+.contact-info-item {
+  @apply flex items-start space-x-3 text-muted-foreground;
 }

@@ -5,13 +5,14 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
-import Index from "./pages/Index";
+
+// Import pages
+import Home from "./pages/Home";
+import About from "./pages/About";
+import Properties from "./pages/Properties";
+import PropertyDetail from "./pages/PropertyDetail";
+import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
-import Procedures from "./pages/Procedures";
-import Treatments from "./pages/Treatments";
-import Complaints from "./pages/Complaints";
-import Reviews from "./pages/Reviews";
-import Blog from "./pages/Blog";
 
 const queryClient = new QueryClient();
 
@@ -23,14 +24,11 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/about" element={<NotFound />} />
-            <Route path="/procedures" element={<Procedures />} />
-            <Route path="/treatments" element={<Treatments />} />
-            <Route path="/complaints" element={<Complaints />} />
-            <Route path="/reviews" element={<Reviews />} />
-            <Route path="/blog" element={<Blog />} />
-            <Route path="/contact" element={<NotFound />} />
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/properties/:type" element={<Properties />} />
+            <Route path="/property/:id" element={<PropertyDetail />} />
+            <Route path="/contact" element={<Contact />} />
             <Route path="/privacy-policy" element={<NotFound />} />
             <Route path="/terms-of-service" element={<NotFound />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
