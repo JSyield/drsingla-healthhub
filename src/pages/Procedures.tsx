@@ -1,10 +1,10 @@
 
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import AnimatedSection from '@/components/AnimatedSection';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Stethoscope, Lungs, Microscope, Flask, FileHeart, PlusCircle, Syringe } from 'lucide-react';
+import { Stethoscope, LungIcon, Microscope, Beaker, FileHeart, PlusCircle, Syringe } from 'lucide-react';
 
 const proceduresData = [
   {
@@ -25,7 +25,7 @@ const proceduresData = [
     id: 3,
     title: "Thoracoscopy",
     description: "A procedure that uses a small camera (thoracoscope) to examine the pleural space and lungs for diagnosis and treatment.",
-    icon: <Lungs className="h-8 w-8 text-primary" />,
+    icon: <LungIcon className="h-8 w-8 text-primary" />,
     details: "Thoracoscopy enables visualization of the pleural space, allowing for biopsies, fluid drainage, and other therapeutic interventions. This minimally invasive approach reduces recovery time compared to open chest procedures."
   },
   {
@@ -53,7 +53,7 @@ const proceduresData = [
     id: 7,
     title: "FENO (Breath Test)",
     description: "A non-invasive test measuring nitric oxide in exhaled breath to assess airway inflammation.",
-    icon: <Flask className="h-8 w-8 text-primary" />,
+    icon: <Beaker className="h-8 w-8 text-primary" />,
     details: "This simple breath test helps diagnose and monitor conditions like asthma by measuring nitric oxide levels, which indicate inflammation in the airways. It's quick, painless, and provides immediate results."
   }
 ];

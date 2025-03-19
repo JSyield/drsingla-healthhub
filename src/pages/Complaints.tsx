@@ -1,12 +1,12 @@
 
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import AnimatedSection from '@/components/AnimatedSection';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Lungs, AlertCircle, Calendar } from 'lucide-react';
+import { LungIcon, AlertCircle, Calendar } from 'lucide-react';
 
 const commonComplaints = [
   {
@@ -115,7 +115,7 @@ const Complaints = () => {
               <Card className="bg-medical-light border-none">
                 <CardContent className="p-6">
                   <div className="flex items-center gap-4 mb-4">
-                    <Lungs className="h-10 w-10 text-primary" />
+                    <LungIcon className="h-10 w-10 text-primary" />
                     <h3 className="text-xl font-semibold">Get Expert Care</h3>
                   </div>
                   <p className="mb-6">
