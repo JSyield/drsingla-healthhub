@@ -4,7 +4,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import AnimatedSection from '@/components/AnimatedSection';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Stethoscope, LungIcon, Microscope, Beaker, FileHeart, PlusCircle, Syringe } from 'lucide-react';
+import { Stethoscope, Microscope, Beaker, FileHeart, PlusCircle, Syringe, Heart } from 'lucide-react';
 
 const proceduresData = [
   {
@@ -25,7 +25,7 @@ const proceduresData = [
     id: 3,
     title: "Thoracoscopy",
     description: "A procedure that uses a small camera (thoracoscope) to examine the pleural space and lungs for diagnosis and treatment.",
-    icon: <LungIcon className="h-8 w-8 text-primary" />,
+    icon: <Heart className="h-8 w-8 text-primary" />,
     details: "Thoracoscopy enables visualization of the pleural space, allowing for biopsies, fluid drainage, and other therapeutic interventions. This minimally invasive approach reduces recovery time compared to open chest procedures."
   },
   {

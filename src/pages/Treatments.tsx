@@ -5,14 +5,14 @@ import Footer from '@/components/Footer';
 import AnimatedSection from '@/components/AnimatedSection';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { LungIcon, Stethoscope, Droplet, Brain, MoonStar, HeartPulse, Activity } from 'lucide-react';
+import { Heart, Stethoscope, Droplet, Brain, MoonStar, HeartPulse, Activity } from 'lucide-react';
 
 const respiratoryTreatments = [
   {
     id: 1,
     title: "Asthma Management",
     description: "Personalized treatment plans to control asthma symptoms and improve quality of life.",
-    icon: <LungIcon className="h-8 w-8 text-primary" />,
+    icon: <Heart className="h-8 w-8 text-primary" />,
     details: "Our comprehensive asthma management includes identifying triggers, medication management, inhaler technique training, and pulmonary rehabilitation when needed."
   },
   {
@@ -40,7 +40,7 @@ const respiratoryTreatments = [
     id: 5,
     title: "Interstitial Lung Disease Treatment",
     description: "Specialized care for various forms of pulmonary fibrosis and other interstitial lung conditions.",
-    icon: <LungIcon className="h-8 w-8 text-primary" />,
+    icon: <Heart className="h-8 w-8 text-primary" />,
     details: "Treatment may include anti-fibrotic medications, immunosuppressants, oxygen therapy, pulmonary rehabilitation, and in some cases, evaluation for lung transplantation."
   }
 ];
