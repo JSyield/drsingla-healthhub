@@ -112,7 +112,7 @@ const PropertyCard = ({ property, className }: PropertyCardProps) => {
               <Phone className="h-3.5 w-3.5" />
               <span>Call</span>
             </Button>
-            <Button size="sm" variant="primary" asChild>
+            <Button size="sm" variant="default" asChild>
               <Link to={`/property/${id}`} className="flex items-center gap-1">
                 Details
                 <ArrowRight className="h-3.5 w-3.5 ml-1" />

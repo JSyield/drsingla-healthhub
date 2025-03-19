@@ -1,440 +1,396 @@
 
 import { useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { useParams, Link } from 'react-router-dom';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
-import AnimatedSection from '@/components/AnimatedSection';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Label } from '@/components/ui/label';
-import { useToast } from '@/hooks/use-toast';
+import { useQuery } from '@tanstack/react-query';
 import { 
-  BedDouble, 
-  Bath, 
-  SquareFeet, 
+  Heart, 
+  Share2, 
   MapPin, 
   Phone, 
   Mail, 
-  Heart, 
-  Share2,
-  ArrowLeft,
-  Check
+  Calendar, 
+  BedDouble, 
+  Bath, 
+  Ruler, 
+  Building
 } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselPrevious,
+  CarouselNext,
+} from '@/components/ui/carousel';
+import { 
+  Form, 
+  FormControl, 
+  FormField, 
+  FormItem, 
+  FormLabel, 
+  FormMessage 
+} from '@/components/ui/form';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { useToast } from '@/components/ui/use-toast';
+import { getPropertyById } from '@/lib/supabase';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
 
-// Import the property data
-import { PropertyType } from '@/components/PropertyCard';
-
-// Sample data for property details - same as in Properties.tsx but with more fields
-const propertiesData: (PropertyType & { features?: string[], agentName?: string, agentPhone?: string, agentEmail?: string, images?: string[] })[] = [
-  {
-    id: "sale-1",
-    title: "Spacious 3 BHK Apartment in Sector 20",
-    description: "A well-ventilated 3 BHK apartment with modern amenities, located in the heart of Panchkula. This apartment offers a comfortable living space with quality fittings and fixtures. It features a spacious living room, modern kitchen, and three well-proportioned bedrooms with attached bathrooms. The apartment comes with a dedicated parking space and 24/7 security.",
-    price: "75,00,000",
-    location: "Sector 20, Panchkula",
-    bedrooms: 3,
-    bathrooms: 2,
-    area: "1500",
-    image: "https://images.unsplash.com/photo-1568605114967-8130f3a36994?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
-    images: [
-      "https://images.unsplash.com/photo-1568605114967-8130f3a36994?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
-      "https://images.unsplash.com/photo-1560185007-c5ca9d2c014d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
-      "https://images.unsplash.com/photo-1560185127-6ed189bf02f4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
-      "https://images.unsplash.com/photo-1560185007-5f0bb1866cab?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80"
-    ],
-    isFeatured: true,
-    type: "sale",
-    features: [
-      "24/7 Security",
-      "Power Backup",
-      "Lift Access",
-      "Visitor Parking",
-      "Piped Gas",
-      "Water Supply",
-      "Park View",
-      "Near Schools & Markets"
-    ],
-    agentName: "Mr. Sandeep Gupta",
-    agentPhone: "+91-8968892466",
-    agentEmail: "friends.properties20@gmail.com"
-  },
-  {
-    id: "rent-1",
-    title: "2 BHK Furnished Flat near City Center",
-    description: "Fully furnished 2 BHK flat with all essential amenities, close to shopping malls and schools. This apartment comes with modern furniture, air conditioning in all rooms, and a fully equipped kitchen. Located in a prime residential area with easy access to public transportation. The society offers amenities like children's play area, jogging track, and 24-hour security.",
-    price: "25,000",
-    priceUnit: "/month",
-    location: "Sector 9, Panchkula",
-    bedrooms: 2,
-    bathrooms: 2,
-    area: "1200",
-    image: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
-    images: [
-      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
-      "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
-      "https://images.unsplash.com/photo-1560448204-61dc36dc98c8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
-      "https://images.unsplash.com/photo-1536376072261-38c75010e6c9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1171&q=80"
-    ],
-    isFeatured: true,
-    type: "rent",
-    features: [
-      "Fully Furnished",
-      "AC in All Rooms",
-      "Modular Kitchen",
-      "24/7 Security",
-      "Power Backup",
-      "Covered Parking",
-      "Close to Market",
-      "Swimming Pool"
-    ],
-    agentName: "Mrs. Priya Sharma",
-    agentPhone: "+91-8968892466",
-    agentEmail: "friends.properties20@gmail.com"
-  }
+// Sample images for the property gallery
+const sampleImages = [
+  'https://images.unsplash.com/photo-1568605114967-8130f3a36994?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80',
+  'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80',
+  'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80',
+  'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80',
 ];
 
-// For real app, include all properties here
-const allProperties = propertiesData;
+// Form schema
+const formSchema = z.object({
+  name: z.string().min(2, { message: "Name is required" }),
+  email: z.string().email({ message: "Invalid email address" }),
+  phone: z.string().min(10, { message: "Valid phone number is required" }),
+  message: z.string().min(10, { message: "Message should be at least 10 characters" }),
+});
+
+type ContactFormValues = z.infer<typeof formSchema>;
 
 const PropertyDetail = () => {
   const { id } = useParams<{ id: string }>();
   const { toast } = useToast();
   const [activeImage, setActiveImage] = useState(0);
-  const [contactForm, setContactForm] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    message: ''
+  
+  const form = useForm<ContactFormValues>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      phone: "",
+      message: "I'm interested in this property. Please contact me with more information.",
+    },
   });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  // Find the property with the given ID
-  const property = allProperties.find(p => p.id === id);
-
-  if (!property) {
-    return (
-      <>
-        <Navbar />
-        <div className="container mx-auto px-4 py-32 text-center">
-          <h1 className="text-2xl font-bold mb-4">Property Not Found</h1>
-          <p className="mb-8">The property you're looking for doesn't exist or has been removed.</p>
-          <Button asChild>
-            <Link to="/properties/all">Browse All Properties</Link>
-          </Button>
-        </div>
-        <Footer />
-      </>
-    );
+  
+  // Fetch property data
+  const { data: property, isLoading, error } = useQuery({
+    queryKey: ['property', id],
+    queryFn: () => getPropertyById(id || ''),
+    enabled: !!id,
+  });
+  
+  const onSubmit = (data: ContactFormValues) => {
+    console.log("Form submitted:", data);
+    toast({
+      title: "Inquiry Sent",
+      description: "We'll get back to you as soon as possible.",
+    });
+    form.reset();
+  };
+  
+  // Placeholder data for demonstration
+  const propertyData = property || {
+    id: "sale-1",
+    title: "Spacious 3 BHK Apartment in Sector 20",
+    description: "A well-ventilated 3 BHK apartment with modern amenities, located in the heart of Panchkula. This beautiful apartment offers panoramic views of the city and is close to shopping malls, schools, and hospitals.\n\nThe apartment features a large living room, a modern kitchen with built-in appliances, three spacious bedrooms with attached bathrooms, and a balcony overlooking the garden area. The complex includes amenities such as 24x7 security, power backup, covered parking, and a children's play area.",
+    price: "75,00,000",
+    location: "Sector 20, Panchkula",
+    bedrooms: 3,
+    bathrooms: 2,
+    area: "1500",
+    image: sampleImages[0],
+    isFeatured: true,
+    type: "sale",
+    features: [
+      "24x7 Security",
+      "Power Backup",
+      "Covered Parking",
+      "Children's Play Area",
+      "Garden",
+      "Swimming Pool",
+      "Gymnasium",
+      "Club House",
+    ],
+    listedDate: "2023-10-15",
+    agent: {
+      name: "Sandeep Gupta",
+      phone: "+91-8968892466",
+      email: "friends.properties20@gmail.com",
+    },
+  };
+  
+  if (isLoading) {
+    return <div className="container mx-auto px-4 py-16 text-center">Loading property details...</div>;
   }
-
-  const handleImageChange = (index: number) => {
-    setActiveImage(index);
-  };
-
-  const handleFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setContactForm(prev => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    
-    // Simulate form submission
-    setTimeout(() => {
-      toast({
-        title: "Inquiry Sent Successfully",
-        description: `We'll get back to you about ${property.title} as soon as possible.`,
-      });
-      
-      setContactForm({
-        name: '',
-        email: '',
-        phone: '',
-        message: ''
-      });
-      setIsSubmitting(false);
-    }, 1500);
-  };
-
+  
+  if (error) {
+    return <div className="container mx-auto px-4 py-16 text-center">Error loading property details. Please try again.</div>;
+  }
+  
   return (
     <>
       <Helmet>
-        <title>{property.title} - M/s Friends Property Consultants</title>
-        <meta name="description" content={property.description.substring(0, 160)} />
+        <title>{propertyData.title} | M/s Friends Property Consultants</title>
+        <meta name="description" content={propertyData.description.slice(0, 160)} />
       </Helmet>
       
       <Navbar />
       
-      <main className="pt-16 min-h-screen">
-        {/* Back Navigation */}
-        <div className="container mx-auto px-4 py-4">
-          <Button variant="ghost" className="flex items-center gap-2" asChild>
-            <Link to={`/properties/${property.type}`}>
-              <ArrowLeft className="h-4 w-4" />
-              Back to Properties
-            </Link>
-          </Button>
-        </div>
-        
-        {/* Property Images */}
-        <section className="pb-8">
-          <div className="container mx-auto px-4">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-              <div className="lg:col-span-2">
-                <div className="relative h-[400px] md:h-[500px] rounded-lg overflow-hidden">
+      <main className="pt-16 pb-24">
+        <div className="container mx-auto px-4">
+          {/* Property Header */}
+          <div className="mb-8">
+            <div className="flex flex-wrap justify-between items-start gap-4 mb-4">
+              <div>
+                <h1 className="text-3xl md:text-4xl font-serif font-bold mb-2">{propertyData.title}</h1>
+                <div className="flex items-center text-muted-foreground">
+                  <MapPin className="h-4 w-4 mr-1" />
+                  <span>{propertyData.location}</span>
+                </div>
+              </div>
+              
+              <div className="flex flex-col items-end">
+                <div className="text-3xl font-bold text-primary mb-1">
+                  ₹{propertyData.price}
+                  {propertyData.type === 'rent' && <span className="text-sm text-muted-foreground ml-1">/month</span>}
+                </div>
+                <div className="flex gap-2">
+                  <Button variant="outline" size="sm" className="flex items-center gap-1">
+                    <Heart className="h-4 w-4" />
+                    <span className="hidden sm:inline">Save</span>
+                  </Button>
+                  <Button variant="outline" size="sm" className="flex items-center gap-1">
+                    <Share2 className="h-4 w-4" />
+                    <span className="hidden sm:inline">Share</span>
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          {/* Property Images */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-10">
+            <div className="lg:col-span-2">
+              <div className="overflow-hidden rounded-lg h-[400px]">
+                <img 
+                  src={sampleImages[activeImage]} 
+                  alt={propertyData.title} 
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            </div>
+            
+            <div className="grid grid-cols-2 gap-2">
+              {sampleImages.slice(0, 4).map((image, index) => (
+                <div 
+                  key={index}
+                  className={`overflow-hidden rounded-lg h-[192px] cursor-pointer ${index === activeImage ? 'ring-2 ring-primary' : ''}`}
+                  onClick={() => setActiveImage(index)}
+                >
                   <img 
-                    src={property.images?.[activeImage] || property.image} 
-                    alt={property.title} 
+                    src={image} 
+                    alt={`Property image ${index + 1}`} 
                     className="w-full h-full object-cover"
                   />
                 </div>
-                
-                {property.images && property.images.length > 1 && (
-                  <div className="flex gap-2 mt-4 overflow-x-auto pb-2">
-                    {property.images.map((img, index) => (
-                      <button 
-                        key={index}
-                        onClick={() => handleImageChange(index)}
-                        className={`relative h-20 w-32 shrink-0 rounded-md overflow-hidden border-2 ${activeImage === index ? 'border-primary' : 'border-transparent'}`}
-                      >
-                        <img 
-                          src={img} 
-                          alt={`${property.title} - view ${index + 1}`} 
-                          className="w-full h-full object-cover"
-                        />
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
-              
-              <div>
-                <Card className="h-full">
-                  <CardContent className="p-6">
-                    <div className="flex flex-col h-full justify-between">
-                      <div>
-                        <h1 className="text-2xl font-serif font-bold mb-2">{property.title}</h1>
-                        <div className="flex items-center text-sm text-muted-foreground mb-4">
-                          <MapPin className="h-4 w-4 mr-1 text-primary" />
-                          <span>{property.location}</span>
-                        </div>
-                        
-                        <div className="mb-6">
-                          <span className="text-3xl font-bold text-primary">
-                            ₹{property.price}
-                          </span>
-                          {property.priceUnit && (
-                            <span className="text-sm text-muted-foreground ml-1">
-                              {property.priceUnit}
-                            </span>
-                          )}
-                        </div>
-                        
-                        <div className="grid grid-cols-3 gap-4 mb-6">
-                          {property.bedrooms !== undefined && (
-                            <div className="text-center p-3 rounded-lg bg-gray-50">
-                              <BedDouble className="h-6 w-6 text-primary mx-auto mb-1" />
-                              <p className="font-medium">{property.bedrooms}</p>
-                              <p className="text-xs text-muted-foreground">Bedrooms</p>
-                            </div>
-                          )}
-                          
-                          {property.bathrooms !== undefined && (
-                            <div className="text-center p-3 rounded-lg bg-gray-50">
-                              <Bath className="h-6 w-6 text-primary mx-auto mb-1" />
-                              <p className="font-medium">{property.bathrooms}</p>
-                              <p className="text-xs text-muted-foreground">Bathrooms</p>
-                            </div>
-                          )}
-                          
-                          {property.area && (
-                            <div className="text-center p-3 rounded-lg bg-gray-50">
-                              <SquareFeet className="h-6 w-6 text-primary mx-auto mb-1" />
-                              <p className="font-medium">{property.area}</p>
-                              <p className="text-xs text-muted-foreground">Sq.ft</p>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                      
-                      <div className="mt-6">
-                        <h3 className="font-medium mb-2">Contact Agent</h3>
-                        <div className="flex items-center mb-4">
-                          <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center mr-3">
-                            <Phone className="h-5 w-5 text-primary" />
-                          </div>
-                          <div>
-                            <p className="font-medium">{property.agentName || "Property Agent"}</p>
-                            <p className="text-sm text-primary">{property.agentPhone || "+91-8968892466"}</p>
-                          </div>
-                        </div>
-                        
-                        <div className="grid grid-cols-2 gap-2">
-                          <Button className="w-full" variant="outline">
-                            <Heart className="h-4 w-4 mr-2" />
-                            Save
-                          </Button>
-                          <Button className="w-full" variant="outline">
-                            <Share2 className="h-4 w-4 mr-2" />
-                            Share
-                          </Button>
-                        </div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
+              ))}
             </div>
           </div>
-        </section>
-        
-        {/* Property Details */}
-        <section className="py-8">
-          <div className="container mx-auto px-4">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              <div className="lg:col-span-2">
-                <AnimatedSection>
-                  <h2 className="text-2xl font-serif font-bold mb-4">Property Details</h2>
-                  <div className="prose max-w-none">
-                    <p className="text-muted-foreground mb-6">{property.description}</p>
+          
+          {/* Property Details & Contact Form */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="lg:col-span-2">
+              <Tabs defaultValue="details">
+                <TabsList className="mb-6">
+                  <TabsTrigger value="details">Details</TabsTrigger>
+                  <TabsTrigger value="features">Features</TabsTrigger>
+                  <TabsTrigger value="location">Location</TabsTrigger>
+                </TabsList>
+                
+                <TabsContent value="details" className="space-y-6">
+                  <div>
+                    <h2 className="text-2xl font-serif font-bold mb-4">Property Details</h2>
+                    
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                      {propertyData.bedrooms && (
+                        <div className="flex flex-col items-center p-4 bg-muted rounded-lg">
+                          <BedDouble className="h-6 w-6 text-primary mb-2" />
+                          <span className="font-medium">{propertyData.bedrooms}</span>
+                          <span className="text-sm text-muted-foreground">Bedrooms</span>
+                        </div>
+                      )}
+                      
+                      {propertyData.bathrooms && (
+                        <div className="flex flex-col items-center p-4 bg-muted rounded-lg">
+                          <Bath className="h-6 w-6 text-primary mb-2" />
+                          <span className="font-medium">{propertyData.bathrooms}</span>
+                          <span className="text-sm text-muted-foreground">Bathrooms</span>
+                        </div>
+                      )}
+                      
+                      {propertyData.area && (
+                        <div className="flex flex-col items-center p-4 bg-muted rounded-lg">
+                          <Ruler className="h-6 w-6 text-primary mb-2" />
+                          <span className="font-medium">{propertyData.area}</span>
+                          <span className="text-sm text-muted-foreground">Sq.ft</span>
+                        </div>
+                      )}
+                      
+                      <div className="flex flex-col items-center p-4 bg-muted rounded-lg">
+                        <Building className="h-6 w-6 text-primary mb-2" />
+                        <span className="font-medium capitalize">{propertyData.type === 'sale' ? 'Sale' : 'Rent'}</span>
+                        <span className="text-sm text-muted-foreground">Type</span>
+                      </div>
+                    </div>
+                    
+                    <h3 className="text-xl font-bold mb-3">Description</h3>
+                    <div className="text-muted-foreground whitespace-pre-line">
+                      {propertyData.description}
+                    </div>
+                  </div>
+                </TabsContent>
+                
+                <TabsContent value="features" className="space-y-6">
+                  <div>
+                    <h2 className="text-2xl font-serif font-bold mb-4">Property Features</h2>
+                    
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                      {propertyData.features?.map((feature, index) => (
+                        <div key={index} className="flex items-center gap-2 p-2">
+                          <div className="h-2 w-2 rounded-full bg-primary"></div>
+                          <span>{feature}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </TabsContent>
+                
+                <TabsContent value="location" className="space-y-6">
+                  <div>
+                    <h2 className="text-2xl font-serif font-bold mb-4">Location</h2>
+                    
+                    <div className="aspect-video bg-muted rounded-lg flex items-center justify-center mb-4">
+                      <p className="text-muted-foreground">Map view will be displayed here</p>
+                    </div>
+                    
+                    <h3 className="text-xl font-bold mb-3">Address</h3>
+                    <p className="text-muted-foreground mb-4">{propertyData.location}</p>
+                    
+                    <h3 className="text-xl font-bold mb-3">Nearby Facilities</h3>
+                    <div className="space-y-2 text-muted-foreground">
+                      <p>• Schools: Within 1-2 km</p>
+                      <p>• Hospitals: Within 3 km</p>
+                      <p>• Shopping Centers: Within 1 km</p>
+                      <p>• Public Transport: Bus stand within 500m</p>
+                    </div>
+                  </div>
+                </TabsContent>
+              </Tabs>
+            </div>
+            
+            <div>
+              <div className="bg-white rounded-xl shadow-sm border p-6">
+                <h3 className="text-xl font-bold mb-4">Contact Agent</h3>
+                
+                <div className="bg-muted rounded-lg p-4 mb-6">
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className="h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center">
+                      <span className="text-xl font-bold text-primary">{propertyData.agent.name.charAt(0)}</span>
+                    </div>
+                    <div>
+                      <h4 className="font-bold">{propertyData.agent.name}</h4>
+                      <p className="text-sm text-muted-foreground">Property Consultant</p>
+                    </div>
                   </div>
                   
-                  {property.features && property.features.length > 0 && (
-                    <div className="mt-8">
-                      <h3 className="text-xl font-medium mb-4">Features & Amenities</h3>
-                      <ul className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                        {property.features.map((feature, index) => (
-                          <li key={index} className="flex items-center">
-                            <Check className="h-5 w-5 text-primary mr-2" />
-                            <span>{feature}</span>
-                          </li>
-                        ))}
-                      </ul>
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2">
+                      <Phone className="h-4 w-4 text-primary" />
+                      <span>{propertyData.agent.phone}</span>
                     </div>
-                  )}
-                </AnimatedSection>
-                
-                {/* Location Map Placeholder */}
-                <AnimatedSection delay={200} className="mt-8">
-                  <h3 className="text-xl font-medium mb-4">Location</h3>
-                  <div className="relative h-80 bg-gray-200 rounded-lg overflow-hidden">
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <p className="text-muted-foreground">Map view of {property.location}</p>
+                    <div className="flex items-center gap-2">
+                      <Mail className="h-4 w-4 text-primary" />
+                      <span>{propertyData.agent.email}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Calendar className="h-4 w-4 text-primary" />
+                      <span>Listed on {propertyData.listedDate}</span>
                     </div>
                   </div>
-                </AnimatedSection>
-              </div>
-              
-              <div>
-                <AnimatedSection>
-                  <Card>
-                    <CardContent className="p-6">
-                      <h3 className="text-xl font-medium mb-4">Interested in this property?</h3>
-                      <form onSubmit={handleSubmit} className="space-y-4">
-                        <div>
-                          <Label htmlFor="name">Your Name</Label>
-                          <Input
-                            id="name"
-                            name="name"
-                            value={contactForm.name}
-                            onChange={handleFormChange}
-                            placeholder="Enter your name"
-                            required
-                          />
-                        </div>
-                        
-                        <div>
-                          <Label htmlFor="email">Email</Label>
-                          <Input
-                            id="email"
-                            name="email"
-                            type="email"
-                            value={contactForm.email}
-                            onChange={handleFormChange}
-                            placeholder="Enter your email"
-                            required
-                          />
-                        </div>
-                        
-                        <div>
-                          <Label htmlFor="phone">Phone Number</Label>
-                          <Input
-                            id="phone"
-                            name="phone"
-                            value={contactForm.phone}
-                            onChange={handleFormChange}
-                            placeholder="Enter your phone number"
-                            required
-                          />
-                        </div>
-                        
-                        <div>
-                          <Label htmlFor="message">Message</Label>
-                          <Textarea
-                            id="message"
-                            name="message"
-                            value={contactForm.message}
-                            onChange={handleFormChange}
-                            placeholder="I'm interested in this property. Please contact me."
-                            rows={4}
-                            required
-                          />
-                        </div>
-                        
-                        <Button 
-                          type="submit" 
-                          className="w-full" 
-                          disabled={isSubmitting}
-                        >
-                          {isSubmitting ? 'Sending...' : 'Send Inquiry'}
-                        </Button>
-                      </form>
-                    </CardContent>
-                  </Card>
-                </AnimatedSection>
+                </div>
                 
-                <AnimatedSection delay={200} className="mt-6">
-                  <Card>
-                    <CardContent className="p-6">
-                      <h3 className="text-lg font-medium mb-3">Contact Agent Directly</h3>
-                      <div className="space-y-3">
-                        <div className="flex items-center">
-                          <Phone className="h-5 w-5 text-primary mr-3" />
-                          <span>{property.agentPhone || "+91-8968892466"}</span>
-                        </div>
-                        <div className="flex items-center">
-                          <Mail className="h-5 w-5 text-primary mr-3" />
-                          <span>{property.agentEmail || "friends.properties20@gmail.com"}</span>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </AnimatedSection>
+                <Form {...form}>
+                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                    <FormField
+                      control={form.control}
+                      name="name"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Name</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Your name" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    
+                    <FormField
+                      control={form.control}
+                      name="email"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Email</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Your email" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    
+                    <FormField
+                      control={form.control}
+                      name="phone"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Phone</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Your phone number" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    
+                    <FormField
+                      control={form.control}
+                      name="message"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Message</FormLabel>
+                          <FormControl>
+                            <Textarea placeholder="Your message" rows={4} {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    
+                    <Button type="submit" className="w-full">Send Inquiry</Button>
+                  </form>
+                </Form>
               </div>
             </div>
           </div>
-        </section>
-        
-        {/* Similar Properties Section (placeholder) */}
-        <section className="py-16 bg-gray-50">
-          <div className="container mx-auto px-4">
-            <h2 className="text-2xl font-serif font-bold mb-8 text-center">You May Also Like</h2>
-            <p className="text-center text-muted-foreground mb-8">
-              Explore more properties similar to this one
-            </p>
-            
-            <div className="text-center">
-              <Button asChild>
-                <Link to={`/properties/${property.type}`}>View More Properties</Link>
-              </Button>
-            </div>
-          </div>
-        </section>
+        </div>
       </main>
+      
+      <Separator />
       
       <Footer />
     </>

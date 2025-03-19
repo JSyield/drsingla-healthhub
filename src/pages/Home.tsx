@@ -17,7 +17,7 @@ import {
 } from '@/components/ui/select';
 import { 
   Building, 
-  Home, 
+  Home as HomeIcon, 
   Search, 
   MapPin, 
   CheckCircle, 
@@ -69,7 +69,7 @@ const featuredProperties: PropertyType[] = [
   }
 ];
 
-const Home = () => {
+const HomePage = () => {
   const [searchType, setSearchType] = useState('buy');
   const [searchLocation, setSearchLocation] = useState('');
   const [propertyType, setPropertyType] = useState('any');
@@ -126,7 +126,7 @@ const Home = () => {
                 </div>
               </AnimatedSection>
               
-              <AnimatedSection animation="fade-in" delay={300}>
+              <AnimatedSection delay={300}>
                 <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-xl p-6 border border-gray-100">
                   <h2 className="text-2xl font-serif font-bold mb-6">Find Your Dream Property</h2>
                   
@@ -210,7 +210,7 @@ const Home = () => {
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {featuredProperties.map((property, index) => (
-                <AnimatedSection key={property.id} animation="fade-in-up" delay={index * 100}>
+                <AnimatedSection key={property.id} delay={index * 100}>
                   <PropertyCard property={property} />
                 </AnimatedSection>
               ))}
@@ -240,10 +240,10 @@ const Home = () => {
             </AnimatedSection>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <AnimatedSection animation="fade-in-up" delay={100}>
+              <AnimatedSection delay={100}>
                 <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 transition-shadow hover:shadow-md">
                   <div className="h-14 w-14 rounded-full bg-primary/10 flex items-center justify-center mb-6">
-                    <Home className="h-7 w-7 text-primary" />
+                    <HomeIcon className="h-7 w-7 text-primary" />
                   </div>
                   <h3 className="text-xl font-bold mb-3">Property Sales</h3>
                   <p className="text-muted-foreground mb-4">
@@ -271,7 +271,7 @@ const Home = () => {
                 </div>
               </AnimatedSection>
               
-              <AnimatedSection animation="fade-in-up" delay={200}>
+              <AnimatedSection delay={200}>
                 <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 transition-shadow hover:shadow-md">
                   <div className="h-14 w-14 rounded-full bg-primary/10 flex items-center justify-center mb-6">
                     <Building className="h-7 w-7 text-primary" />
@@ -302,7 +302,7 @@ const Home = () => {
                 </div>
               </AnimatedSection>
               
-              <AnimatedSection animation="fade-in-up" delay={300}>
+              <AnimatedSection delay={300}>
                 <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 transition-shadow hover:shadow-md">
                   <div className="h-14 w-14 rounded-full bg-primary/10 flex items-center justify-center mb-6">
                     <Phone className="h-7 w-7 text-primary" />
@@ -427,4 +427,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default HomePage;

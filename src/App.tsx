@@ -7,7 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 
 // Import pages
-import Home from "./pages/Home";
+import HomePage from "./pages/Home";
 import About from "./pages/About";
 import Properties from "./pages/Properties";
 import PropertyDetail from "./pages/PropertyDetail";
@@ -24,7 +24,7 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={<HomePage />} />
             <Route path="/about" element={<About />} />
             <Route path="/properties/:type" element={<Properties />} />
             <Route path="/property/:id" element={<PropertyDetail />} />
