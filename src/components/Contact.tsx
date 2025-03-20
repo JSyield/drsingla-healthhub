@@ -9,55 +9,56 @@ import { Card, CardContent } from '@/components/ui/card';
 import { useToast } from '@/components/ui/use-toast';
 import AnimatedSection from '@/components/AnimatedSection';
 import { cn } from '@/lib/utils';
+import { submitContactForm } from '@/lib/supabase';
 
 const ContactInfo = () => {
   return (
     <div className="space-y-6">
       <h2 className="text-2xl font-serif font-semibold">Contact Information</h2>
       <p className="text-muted-foreground mb-6">
-        Feel free to reach out with any questions or to schedule an appointment.
-        Our team is here to assist you.
+        Feel free to reach out with any questions about properties or to schedule a viewing.
+        Our team is here to assist you find your dream property.
       </p>
       
       <div className="space-y-4">
         <div className="flex items-start">
-          <div className="h-10 w-10 rounded-full bg-medical-light flex items-center justify-center mr-4 shrink-0">
+          <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center mr-4 shrink-0">
             <Phone className="h-5 w-5 text-primary" />
           </div>
           <div>
             <h3 className="font-medium">Phone</h3>
-            <p className="text-muted-foreground">+91 9105243000</p>
+            <p className="text-muted-foreground">+91-8968892466</p>
           </div>
         </div>
         
         <div className="flex items-start">
-          <div className="h-10 w-10 rounded-full bg-medical-light flex items-center justify-center mr-4 shrink-0">
+          <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center mr-4 shrink-0">
             <Mail className="h-5 w-5 text-primary" />
           </div>
           <div>
             <h3 className="font-medium">Email</h3>
-            <p className="text-muted-foreground">karansingladr@gmail.com</p>
+            <p className="text-muted-foreground">friends.properties20@gmail.com</p>
           </div>
         </div>
         
         <div className="flex items-start">
-          <div className="h-10 w-10 rounded-full bg-medical-light flex items-center justify-center mr-4 shrink-0">
+          <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center mr-4 shrink-0">
             <MapPin className="h-5 w-5 text-primary" />
           </div>
           <div>
             <h3 className="font-medium">Location</h3>
-            <p className="text-muted-foreground">123 Medical Plaza, Punjab, India</p>
+            <p className="text-muted-foreground">SCO 272, Sector-20, Panchkula - 134116, Haryana, India</p>
           </div>
         </div>
         
         <div className="flex items-start">
-          <div className="h-10 w-10 rounded-full bg-medical-light flex items-center justify-center mr-4 shrink-0">
+          <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center mr-4 shrink-0">
             <Clock className="h-5 w-5 text-primary" />
           </div>
           <div>
             <h3 className="font-medium">Office Hours</h3>
-            <p className="text-muted-foreground">Mon-Sat: 9:00 AM - 6:00 PM</p>
-            <p className="text-muted-foreground">Sunday: Closed</p>
+            <p className="text-muted-foreground">Mon-Sat: 9:00 AM - 7:00 PM</p>
+            <p className="text-muted-foreground">Sunday: By Appointment</p>
           </div>
         </div>
       </div>
@@ -80,24 +81,34 @@ const ContactForm = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Simulate form submission
-    setTimeout(() => {
+    try {
+      await submitContactForm(formData);
+      
       toast({
-        title: "Appointment Request Received",
-        description: "We'll contact you shortly to confirm your appointment.",
+        title: "Inquiry Received",
+        description: "Thank you for your message. We'll contact you shortly.",
       });
+      
       setFormData({
         name: '',
         email: '',
         phone: '',
         message: ''
       });
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      toast({
+        title: "Submission Error",
+        description: "There was a problem submitting your inquiry. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
       setIsSubmitting(false);
-    }, 1500);
+    }
   };
 
   return (
@@ -151,7 +162,7 @@ const ContactForm = () => {
                 name="message"
                 value={formData.message}
                 onChange={handleChange}
-                placeholder="Describe your symptoms or reason for appointment"
+                placeholder="Describe the property you're looking for or your inquiry"
                 className="min-h-[120px]"
                 required
               />
@@ -187,7 +198,7 @@ const ContactForm = () => {
               ) : (
                 <span className="flex items-center">
                   <Send className="h-4 w-4 mr-2" />
-                  Book Appointment
+                  Send Inquiry
                 </span>
               )}
             </Button>
@@ -204,10 +215,10 @@ const Contact = () => {
       <div className="text-center max-w-3xl mx-auto mb-12">
         <AnimatedSection>
           <div className="chip mb-4">Get In Touch</div>
-          <h2 className="section-title">Schedule Your Appointment</h2>
+          <h2 className="section-title">Contact Our Experts</h2>
           <p className="section-subtitle">
-            Take the first step towards better respiratory health by scheduling a consultation 
-            with Dr. Karan Singla. We're here to provide the expert care you deserve.
+            Looking for your dream property? Have questions about listings? 
+            Reach out to us and our expert property consultants will assist you.
           </p>
         </AnimatedSection>
       </div>

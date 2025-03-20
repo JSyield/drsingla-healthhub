@@ -8,10 +8,10 @@ import { HelmetProvider } from "react-helmet-async";
 
 // Import pages
 import HomePage from "./pages/Home";
-import About from "./pages/About";
-import Properties from "./pages/Properties";
-import PropertyDetail from "./pages/PropertyDetail";
-import Contact from "./pages/Contact";
+import AboutPage from "./pages/About";
+import PropertiesPage from "./pages/Properties";
+import PropertyDetailPage from "./pages/PropertyDetail";
+import ContactPage from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -25,10 +25,10 @@ const App = () => (
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<HomePage />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/properties/:type" element={<Properties />} />
-            <Route path="/property/:id" element={<PropertyDetail />} />
-            <Route path="/contact" element={<Contact />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/properties/:type" element={<PropertiesPage />} />
+            <Route path="/property/:id" element={<PropertyDetailPage />} />
+            <Route path="/contact" element={<ContactPage />} />
             <Route path="/privacy-policy" element={<NotFound />} />
             <Route path="/terms-of-service" element={<NotFound />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

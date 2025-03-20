@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import AnimatedSection from '@/components/AnimatedSection';
 import { cn } from '@/lib/utils';
+import { Link } from 'react-router-dom';
 
 interface ServiceProps {
   title: string;
@@ -16,40 +17,40 @@ interface ServiceProps {
 
 const services = [
   {
-    title: "Allergy Testing",
-    description: "Comprehensive testing to identify specific allergens triggering respiratory symptoms.",
-    icon: "🔬",
-    link: "/procedures/allergy-testing"
+    title: "Property Sales",
+    description: "Find your dream home from our extensive portfolio of residential and commercial properties for sale.",
+    icon: "🏘️",
+    link: "/properties/sale"
   },
   {
-    title: "Bronchoscopy",
-    description: "Advanced visualization of the airways using a bronchoscope for diagnosis and treatment.",
-    icon: "🔎",
-    link: "/procedures/bronchoscopy"
+    title: "Rental Properties",
+    description: "Discover quality rental properties that match your lifestyle and budget requirements.",
+    icon: "🔑",
+    link: "/properties/rent"
   },
   {
-    title: "Thoracoscopy",
-    description: "Minimally invasive approach to inspect pleural space for accurate diagnosis and treatment.",
-    icon: "🩺",
-    link: "/procedures/thoracoscopy"
-  },
-  {
-    title: "Pulmonary Function Testing",
-    description: "Detailed assessment of lung capacity, air flow, and oxygen exchange.",
+    title: "Property Valuation",
+    description: "Get accurate market value assessment for your property with our expert valuation services.",
     icon: "📊",
-    link: "/procedures/pulmonary-function-testing"
+    link: "/contact"
   },
   {
-    title: "Sleep Disorder Treatment",
-    description: "Specialized care for conditions like sleep apnea, insomnia, and narcolepsy.",
-    icon: "💤",
-    link: "/treatments/sleep-disorders"
+    title: "Investment Consulting",
+    description: "Professional advice on real estate investments to maximize your returns and minimize risks.",
+    icon: "💰",
+    link: "/contact"
   },
   {
-    title: "Asthma Management",
-    description: "Personalized treatment plans to control symptoms and improve quality of life.",
-    icon: "🫁",
-    link: "/treatments/asthma"
+    title: "Legal Assistance",
+    description: "Guidance through the legal aspects of property transactions, ensuring compliance with all regulations.",
+    icon: "⚖️",
+    link: "/contact"
+  },
+  {
+    title: "Property Management",
+    description: "Comprehensive property management services to maintain and enhance the value of your real estate assets.",
+    icon: "🏢",
+    link: "/contact"
   }
 ];
 
@@ -68,7 +69,7 @@ const ServiceCard: React.FC<ServiceProps> = ({ title, description, icon, link, d
       >
         <CardHeader className="pb-2">
           <div className="flex items-start justify-between">
-            <div className="h-12 w-12 flex items-center justify-center text-2xl rounded-lg bg-medical-light mb-3">
+            <div className="h-12 w-12 flex items-center justify-center text-2xl rounded-lg bg-primary/10 mb-3">
               {icon}
             </div>
             <ArrowUpRight className={cn(
@@ -82,12 +83,12 @@ const ServiceCard: React.FC<ServiceProps> = ({ title, description, icon, link, d
           <CardDescription className="text-sm text-muted-foreground mb-4">
             {description}
           </CardDescription>
-          <a 
-            href={link} 
+          <Link 
+            to={link} 
             className="text-sm font-medium text-primary inline-flex items-center link-underline"
           >
             Learn more
-          </a>
+          </Link>
         </CardContent>
       </Card>
     </AnimatedSection>
@@ -100,10 +101,10 @@ const Services = () => {
       <div className="text-center max-w-3xl mx-auto mb-12">
         <AnimatedSection>
           <div className="chip mb-4">Our Services</div>
-          <h2 className="section-title">Advanced Procedures & Treatments</h2>
+          <h2 className="section-title">Comprehensive Real Estate Solutions</h2>
           <p className="section-subtitle">
-            Specialized care using the latest medical advancements for respiratory and sleep disorders,
-            tailored to each patient's unique needs.
+            We offer a wide range of real estate services tailored to meet your specific needs,
+            whether you're buying, selling, or investing in property.
           </p>
         </AnimatedSection>
       </div>
@@ -123,8 +124,8 @@ const Services = () => {
 
       <div className="text-center mt-12">
         <AnimatedSection animation="fade-in" delay={600}>
-          <Button size="lg" variant="outline" className="border-primary text-primary hover:bg-primary hover:text-white transition-colors">
-            View All Services
+          <Button asChild size="lg" variant="outline" className="border-primary text-primary hover:bg-primary hover:text-white transition-colors">
+            <Link to="/properties/all">View All Properties</Link>
           </Button>
         </AnimatedSection>
       </div>

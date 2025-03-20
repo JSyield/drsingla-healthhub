@@ -11,7 +11,7 @@
     --card-foreground: 222.2 84% 4.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
-    --primary: 221 83% 53%;
+    --primary: 203 81% 41%;
     --primary-foreground: 210 40% 98%;
     --secondary: 210 40% 96.1%;
     --secondary-foreground: 222.2 47.4% 11.2%;
@@ -23,93 +23,70 @@
     --destructive-foreground: 210 40% 98%;
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 221 83% 53%;
-    --radius: 0.75rem;
-    
-    /* Property website theme colors - blue-based real estate color scheme */
-    --medical-light: 214 100% 97%;
-    --medical-dark: 221 83% 25%;
+    --ring: 203 81% 41%;
+    --radius: 0.5rem;
+  }
+ 
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 217.2 91.2% 59.8%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 224.3 76.3% 48%;
   }
 }
-
+ 
 @layer base {
   * {
     @apply border-border;
   }
-  
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
   
   h1, h2, h3, h4, h5, h6 {
-    @apply tracking-tight;
+    @apply font-serif;
   }
 }
 
 @layer components {
   .section-container {
-    @apply container mx-auto px-4 py-16 sm:py-24;
+    @apply container mx-auto px-4 py-16 md:py-24;
   }
   
   .section-title {
-    @apply text-3xl md:text-4xl font-serif font-bold tracking-tight mb-6;
+    @apply text-3xl md:text-4xl font-serif font-bold mb-4;
   }
   
   .section-subtitle {
-    @apply text-muted-foreground text-lg mb-10;
+    @apply text-muted-foreground text-lg max-w-3xl mx-auto;
   }
   
   .chip {
-    @apply inline-block py-1 px-3 rounded-full text-xs font-medium bg-primary/10 text-primary;
+    @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary;
   }
   
-  .glass-card {
-    @apply bg-white/80 backdrop-blur-sm border border-border rounded-xl shadow-sm hover:shadow-md transition-shadow;
-  }
-
   .link-underline {
-    @apply relative after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-0 after:bg-primary after:transition-all after:duration-300 hover:after:w-full;
+    @apply relative after:absolute after:w-0 after:h-0.5 after:bg-primary after:bottom-0 after:left-0 hover:after:w-full after:transition-all after:duration-300;
   }
 }
 
-@layer utilities {
-  .animate-image-shimmer {
-    animation: image-shimmer 30s infinite alternate;
-  }
-  
-  .animate-fade-in {
-    animation: fade-in 0.5s ease-out forwards;
-  }
-  
-  .animate-fade-in-up {
-    animation: fade-in-up 0.5s ease-out forwards;
-  }
-  
-  .animate-slide-in-right {
-    animation: slide-in-right 0.5s ease-out forwards;
-  }
-}
-
-@keyframes image-shimmer {
-  0% {
-    transform: scale(1);
-  }
-  100% {
-    transform: scale(1.05);
-  }
-}
-
-@keyframes fade-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes fade-in-up {
+@keyframes fadeInUp {
   from {
     opacity: 0;
     transform: translateY(20px);
@@ -120,7 +97,16 @@
   }
 }
 
-@keyframes slide-in-right {
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInRight {
   from {
     opacity: 0;
     transform: translateX(-20px);
@@ -131,25 +117,32 @@
   }
 }
 
-/* Add subtle pattern for hero section */
-.bg-hero-pattern {
-  background-color: #f8fafc;
-  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%232563eb' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+@keyframes imageShimmer {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
-/* Add custom components for real estate website */
-.property-feature {
-  @apply flex items-center px-3 py-1 rounded-full border border-primary/20 text-sm;
-}
-
-.property-price {
-  @apply text-2xl font-bold text-primary;
-}
-
-.property-location {
-  @apply flex items-center text-sm text-muted-foreground;
-}
-
-.contact-info-item {
-  @apply flex items-start space-x-3 text-muted-foreground;
+@layer utilities {
+  .animate-fade-in-up {
+    animation: fadeInUp 0.6s ease-out forwards;
+  }
+  
+  .animate-fade-in {
+    animation: fadeIn 0.6s ease-out forwards;
+  }
+  
+  .animate-slide-in-right {
+    animation: slideInRight 0.6s ease-out forwards;
+  }
+  
+  .animate-image-shimmer {
+    animation: imageShimmer 20s infinite ease-in-out;
+  }
 }

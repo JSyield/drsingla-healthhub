@@ -12,7 +12,7 @@ interface AnimatedSectionProps {
 
 const AnimatedSection: React.FC<AnimatedSectionProps> = ({
   children,
-  className,
+  className = "",
   animation = 'fade-in-up',
   delay = 0,
   threshold = 0.2,
