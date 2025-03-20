@@ -1,6 +1,6 @@
 
 import { Helmet } from 'react-helmet-async';
-import Navbar from '@/components/Navbar';
+import Navbar from '@/components/navbar';
 import Footer from '@/components/Footer';
 import AnimatedSection from '@/components/AnimatedSection';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';

@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useParams, useNavigate } from 'react-router-dom';
-import Navbar from '@/components/Navbar';
+import Navbar from '@/components/navbar';
 import Footer from '@/components/Footer';
 import PropertyCard from '@/components/PropertyCard';
 import { PropertyType } from '@/components/PropertyCard';
